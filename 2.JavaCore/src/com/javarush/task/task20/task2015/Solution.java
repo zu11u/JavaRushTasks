@@ -1,6 +1,7 @@
 package com.javarush.task.task20.task2015;
 
 import java.io.*;
+import java.util.Random;
 
 /* 
 Переопределение сериализации
@@ -17,6 +18,10 @@ public class Solution implements Serializable, Runnable {
 
     public void run() {
         // do something here, does not matter
+        Random rand = new Random();
+        System.out.print(speed + " : ");
+        speed += rand.nextInt(5);
+        System.out.println(speed);
     }
 
     /**
@@ -36,7 +41,14 @@ public class Solution implements Serializable, Runnable {
         runner.start();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Solution sol = new Solution(200);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/media/Data/TEMP/20/save.ser"));
+        oos.writeObject(sol);
+        oos.close();
 
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/media/Data/TEMP/20/save.ser"));
+        Solution sol2 = (Solution) ois.readObject();
+        ois.close();
     }
 }
